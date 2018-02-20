@@ -23,6 +23,7 @@
 namespace OC\Files\SimpleFS;
 
 use OCP\Files\File;
+use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Files\SimpleFS\ISimpleFile;
 
@@ -80,6 +81,7 @@ class SimpleFile implements ISimpleFile  {
 	 * Get the content
 	 *
 	 * @throws NotPermittedException
+	 * @throws NotFoundException
 	 * @return string
 	 */
 	public function getContent() {
@@ -97,6 +99,7 @@ class SimpleFile implements ISimpleFile  {
 	 *
 	 * @param string $data
 	 * @throws NotPermittedException
+	 * @throws NotFoundException
 	 */
 	public function putContent($data) {
 		$this->checkFile();
@@ -111,7 +114,7 @@ class SimpleFile implements ISimpleFile  {
 	 * Then traverse up and check all folders if they exists. This so that the
 	 * next request will have a valid appdata structure again.
 	 *
-	 * @throws NotPermittedException
+	 * @throws NotFoundException
 	 */
 	private function checkFile() {
 		$cur = $this->file;
@@ -123,7 +126,7 @@ class SimpleFile implements ISimpleFile  {
 		}
 
 		if ($cur !== $this->file) {
-			throw new NotPermittedException('File does not exist');
+			throw new NotFoundException('File does not exist');
 		}
 	}
 
